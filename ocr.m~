@@ -3,7 +3,6 @@ I = im2double(imread('test.png'));
 %Binarization
 %turn image into black and white
 BW = im2bw(I, 0.9);
-inv_BW = 1-BW;
 imshow(I);
 figure, imshow(BW);
 
@@ -12,8 +11,9 @@ figure, imshow(BW);
 row_start = [];
 row_end = [];
 %horizontal pixel scan, find top/bottom of each row (any row with a black pixel)
-BW_row_sum = sum(inv_BW,2);
-flag = 0;
+BW_row_sum = sum(BW,2);
+% BW_row_nonzero_indices = find(BW);
+% BW_row_zero_indices = find(BW<=0);
 
 for n=1:length(BW_row_sum)
     if flag==0 && BW_row_sum(n)~=0
@@ -31,7 +31,7 @@ if BW_row_sum(length(BW_row_sum))>0
 end
 
 %per row: vertical scan, find left/right of each character (any column with a single black pixel)
-BW_col_sum = sum(inv_BW);
+%BW_col_sum = sum(BW);
 
 %Character recognition
 %
