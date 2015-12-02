@@ -1,10 +1,10 @@
-function showboxes(im, boxes, out)
+function showboxes(im, boxes, map, out)
 % Draw bounding boxes on top of an image.
 %   showboxes(im, boxes, out)
 %
 %   If out is given, a pdf of the image is generated (requires export_fig).
 
-if nargin > 2
+if nargin > 3
   % different settings for producing pdfs
   print = true;
   %wwidth = 2.25;
@@ -24,7 +24,9 @@ else
   cwidth = 2;
 end
 
-image(im); 
+imshow(im);
+% image(im); 
+% colormap(map);
 if print
   truesize(gcf);
 end
