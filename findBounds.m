@@ -1,4 +1,4 @@
-%% Helper function for extracting end points from a column vector.
+%% Helper function for extracting bounds from a column vector.
 function [startPoints, endPoints] = findBounds(column)
 %Iterate through column, saving start and end points.
 startPoints = [];
