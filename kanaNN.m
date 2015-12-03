@@ -13,7 +13,7 @@ close all;
 % The matrix T is a 26x26 identity matrix which maps the 26 input
 % vectors to the 26 classes.
 
-[X,T] = kanaPD('kana_bitmaps','png');
+[X,T] = kanaPD('kana_subset','png');
 Xdim = size(X);
 numCharacters = Xdim(2);
 vectorLength = Xdim(1);
@@ -35,7 +35,6 @@ plotBitmap(X(:,10),8,11)
 setdemorandstream(pi);
 
 net1 = feedforwardnet(25);
-view(net1)
 
 %% Training the first Neural Network
 % The function *train* divides up the data into training, validation and
