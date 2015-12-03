@@ -13,7 +13,7 @@ close all;
 % The matrix T is a 26x26 identity matrix which maps the 26 input
 % vectors to the 26 classes.
 
-[X,T] = kanaPD('kana_bitmaps','png');
+[X,T, kanaNames] = kanaPD('kana_bitmaps','png');
 Xdim = size(X);
 numCharacters = Xdim(2);
 vectorLength = Xdim(1);
@@ -58,7 +58,7 @@ noiseLevels = 0:.05:1;
 numLevels = length(noiseLevels);
 percError1 = zeros(1,numLevels);
 
-[X_test,T_test] = kanaPD('resized_kana','jpg');
+[X_test,T_test, kanaNames_test] = kanaPD('resized_kana_subset','jpg');
 Y1 = net1(X_test);
 
 % figure
