@@ -13,7 +13,7 @@ close all;
 % The matrix T is a 26x26 identity matrix which maps the 26 input
 % vectors to the 26 classes.
 
-[X,T, kanaNames] = kanaPD('kana_bitmaps','png');
+[X,T, kanaNames] = kanaPD('kana_subset','png');
 Xdim = size(X);
 numCharacters = Xdim(2);
 vectorLength = Xdim(1);
@@ -48,8 +48,16 @@ view(net1)
 % Training stops when the network is no longer likely to improve on the
 % training or validation sets.
 
-net1.divideFcn = '';
-net1 = train(net1,X,T,nnMATLAB);
+% net1.divideFcn = '';
+% net1 = train(net1,X,T,nnMATLAB);
+
+%%Noisy net over 16 images
+numNoise = 30;
+Xn = min(max(repmat(X,1,numNoise)+randn(vectorLength,numCharacters*numNoise)*0.2,0),1);
+Tn = repmat(T,1,numNoise);
+net2 = feedforwardnet(25);
+net2 = train(net2,Xn,Tn,nnMATLAB);
+
 
 
 %% Testing Both Neural Networks
@@ -59,7 +67,10 @@ numLevels = length(noiseLevels);
 percError1 = zeros(1,numLevels);
 
 [X_test,T_test, kanaNames_test] = kanaPD('resized_kana_subset','jpg');
-Y1 = net1(X_test);
+Y1 = net2(X_test);
+Z = compet(Y1);
+classifiedNames = matrixToNames(Z, kanaNames);
+classifiedNames
 
 % figure
 % plot(noiseLevels,percError1*100,'--',noiseLevels,percError2*100);
