@@ -1,8 +1,8 @@
-[I, map] = imread('test.png');
+[I, map] = imread('sayonara2.jpg');
 
 %Binarization
 %turn image into black and white
-BW = im2bw(I, 0.9);
+BW = im2double(im2bw(I, 0.9));
 inv_BW = 1-BW;
 
 %Segmentation
@@ -68,10 +68,10 @@ showboxes(BW,bboxes,map);
 cropped_characters = {};
 for n=1:length(row_start)
     for m=1:length(col_start{n})
-        figure, imshow(BW(row_start(n):row_end(n), col_start{n}(m):col_end{n}(m)));
+        %figure, imshow(BW(row_start(n):row_end(n), col_start{n}(m):col_end{n}(m)));
         cropped_characters = [cropped_characters, BW(row_start(n):row_end(n), col_start{n}(m):col_end{n}(m))];
     end
 end
 
 %Character recognition
-%
+[kana, conf] = kanaRecognition(cropped_characters)
