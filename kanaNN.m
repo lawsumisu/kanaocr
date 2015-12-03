@@ -1,3 +1,4 @@
+close all;
 %% Character Recognition
 % This example illustrates how to train a neural network to perform
 % simple character recognition.
@@ -20,7 +21,7 @@ vectorLength = Xdim(1);
 %%
 % Here A, the first letter, is plotted as a bit map.
 
-plotBitmap(X(:,1),8,11)
+plotBitmap(X(:,10),8,11)
 
 %% Creating the First Neural Network
 % To solve this problem we will use a feedforward neural network set up
@@ -68,7 +69,7 @@ Tn = repmat(T,1,numNoise);
 % Here is a noise version of A.
 
 figure
-plotBitmap(Xn(:,1),8,11)
+plotBitmap(Xn(:,10),8,11)
 
 %%
 % Here the second network is created and trained.
