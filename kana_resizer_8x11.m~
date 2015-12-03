@@ -1,0 +1,12 @@
+images = dir('resized_kana/*.jpg');
+
+for j=1:length(images)
+    I = im2double(imread(strcat('resized_kana/',getfield(images(j),'name'))));
+    N = imresize(8.0/length(a(1, :)));
+    if length(N) > 11
+        N = N(1:11, :);
+    elseif length(N) < 11
+        N = N()
+    end
+    imwrite(BW(row_start:row_end, col_start:col_end), strcat('resized_kana/',getfield(images(j),'name')));
+end
