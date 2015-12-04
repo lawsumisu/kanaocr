@@ -1,7 +1,7 @@
-images = dir('kana_pro_w3/*.jpg');
+images = dir('cropped_kana/*.jpg');
 
 for j=1:length(images)
-    [I, map] = imread(strcat('kana_pro_w3/',getfield(images(j),'name')));
+    [I, map] = imread(strcat('cropped_kana/',getfield(images(j),'name')));
 
     %Binarization
     %turn image into black and white
@@ -41,5 +41,5 @@ for j=1:length(images)
         end
     end
 
-    imwrite(BW(row_start:row_end, col_start:col_end), strcat('kana_pro_w3/',getfield(images(j),'name')));
+    imwrite(BW(row_start:row_end, col_start:col_end), strcat('cropped_kana/',getfield(images(j),'name')));
 end
