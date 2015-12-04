@@ -28,6 +28,7 @@
 % examples. You can load the training data, and view some of the images.
 
 % Load the training data into memory
+rng('default');
 dirnames = {'kana_subsets/kana_msp', ...
     'kana_subsets/kana_proN', ...
     'kana_subsets/kana_pro_w3', ...
@@ -61,7 +62,7 @@ end
 % Neural networks have weights randomly initialized before training.
 % Therefore the results from training are different each time. To avoid
 % this behavior, explicitly set the random number generator seed.
-rng('default')
+
 
 %%
 % Set the size of the hidden layer for the autoencoder. For the autoencoder
@@ -184,7 +185,7 @@ view(kana_softnet)
 % networks that you have trained. They are |autoenc1|, |autoenc2|, and
 % |softnet|.
 
-view(autoenc1)
+view(kana_autoenc1)
 view(kana_autoenc2)
 view(kana_softnet)
 
@@ -195,62 +196,62 @@ view(kana_softnet)
 
 kana_deepnet = stack(kana_autoenc1,kana_autoenc2,kana_softnet);
 
-% %%
-% % You can view a diagram of the stacked network with the |view| function.
-% % The network is formed by the encoders from the autoencoders and the
-% % softmax layer.
-% view(kana_deepnet)
-% 
-% %%
-% % With the full deep network formed, you can compute the results on the
-% % test set. To use images with the stacked network, you have to reshape the
-% % test images into a matrix. You can do this by stacking the columns of an
-% % image to form a vector, and then forming a matrix from these vectors.
-% 
-% % Get the number of pixels in each image
-% imageWidth = 28;
-% imageHeight = 28;
-% inputSize = imageWidth*imageHeight;
-% 
-% % Load the test images
-% [xTestImages, tTest] = digittest_dataset;
-% 
-% % Turn the test images into vectors and put them in a matrix
-% xTest = zeros(inputSize,numel(xTestImages));
-% for i = 1:numel(xTestImages)
-%     xTest(:,i) = xTestImages{i}(:);
-% end
-% 
-% %%
-% % You can visualize the results with a confusion matrix. The numbers in the
-% % bottom right-hand square of the matrix give the overall accuracy.
-% 
-% y = kana_deepnet(xTest);
-% plotconfusion(tTest,y);
-% 
-% %% Fine tuning the deep neural network
-% % The results for the deep neural network can be improved by performing
-% % backpropagation on the whole multilayer network. This process is often
-% % referred to as fine tuning.
-% %
-% % You fine tune the network by retraining it on the training data in a
-% % supervised fashion. Before you can do this, you have to reshape the
-% % training images into a matrix, as was done for the test images.
-% 
-% % Turn the training images into vectors and put them in a matrix
-% xTrain = zeros(inputSize,numel(xTrainImages));
-% for i = 1:numel(xTrainImages)
-%     xTrain(:,i) = xTrainImages{i}(:);
-% end
-% 
-% % Perform fine tuning
-% kana_deepnet = train(kana_deepnet,xTrain,tTrain);
-% 
-% %%
-% % You then view the results again using a confusion matrix.
-% 
-% y = kana_deepnet(xTest);
-% plotconfusion(tTest,y);
+%%
+% You can view a diagram of the stacked network with the |view| function.
+% The network is formed by the encoders from the autoencoders and the
+% softmax layer.
+view(kana_deepnet)
+
+%%
+% With the full deep network formed, you can compute the results on the
+% test set. To use images with the stacked network, you have to reshape the
+% test images into a matrix. You can do this by stacking the columns of an
+% image to form a vector, and then forming a matrix from these vectors.
+
+% Get the number of pixels in each image
+imageWidth = 30;
+imageHeight = 30;
+inputSize = imageWidth*imageHeight;
+
+% Load the test images
+[xTestImages, tTest] = kanaTrain_dataset({'kana_subsets/kana_pr6NM'}, 'jpg',9);
+
+% Turn the test images into vectors and put them in a matrix
+xTest = zeros(inputSize,numel(xTestImages));
+for i = 1:numel(xTestImages)
+    xTest(:,i) = xTestImages{i}(:);
+end
+
+%%
+% You can visualize the results with a confusion matrix. The numbers in the
+% bottom right-hand square of the matrix give the overall accuracy.
+
+y = kana_deepnet(xTest);
+plotconfusion(tTest,y);
+
+%% Fine tuning the deep neural network
+% The results for the deep neural network can be improved by performing
+% backpropagation on the whole multilayer network. This process is often
+% referred to as fine tuning.
+%
+% You fine tune the network by retraining it on the training data in a
+% supervised fashion. Before you can do this, you have to reshape the
+% training images into a matrix, as was done for the test images.
+
+% Turn the training images into vectors and put them in a matrix
+xTrain = zeros(inputSize,numel(xTrainImages));
+for i = 1:numel(xTrainImages)
+    xTrain(:,i) = xTrainImages{i}(:);
+end
+
+% Perform fine tuning
+kana_deepnet = train(kana_deepnet,xTrain,tTrain);
+
+%%
+% You then view the results again using a confusion matrix.
+
+y = kana_deepnet(xTest);
+plotconfusion(tTest,y);
 
 %% Summary
 % This example showed how to train a deep neural network to classify digits

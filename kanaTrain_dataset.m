@@ -19,7 +19,7 @@ for k = 1:m
     dirname = dirnames{k};
     images = dir(strcat(dirname, '/*.', extension));
     n = length(images);
-    numExtraTransforms = 4;
+    numExtraTransforms = 1;
     arrayLength = (1+numExtraTransforms)*length(images);
     
     %% Apply random transformations
@@ -32,14 +32,13 @@ for k = 1:m
         % Add the original, unmodified version of the image to the array,
         % as well as its inversion.
         imArray = [imArray bitmap];
-        %imArray{i+n}= 1-bitmap;
         t1 = zeros(numCharacters, 1);
         t1(i) = 1;
         targets = [targets t1];
         for j = 1:numExtraTransforms
             %Apply a small random translation
-            rx = randi([-5,5]);
-            ry = randi([-5,5]);
+            rx = randi([-2,2]);
+            ry = randi([-2,2]);
             transformedImage = imtranslate(bitmap, [rx,ry], 'FillValues', 1);
             imArray = [imArray transformedImage];
             
