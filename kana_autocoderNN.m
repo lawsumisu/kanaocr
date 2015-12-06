@@ -1,3 +1,5 @@
+clear all;
+close all;
 %% Training a Deep Neural Network for Digit Classification
 % This example shows how to use Neural Network Toolbox(TM) to train a deep
 % neural network to classify images of digits.
@@ -33,13 +35,15 @@ dirnames = {'kana_subsets/kana_msp', ...
     'kana_subsets/kana_proN', ...
     'kana_subsets/kana_pro_w3', ...
     'kana_subsets/kana_std_w8'};
-[xTrainImages, tTrain] = kanaTrain_dataset(dirnames, 'jpg', 9);
+[xTrainImages, tTrain] = kanaTrain_dataset(dirnames, 'jpg');
 
 % Display some of the training images
 clf
-for i = 1:20
-    subplot(4,5,i);
-    imshow(xTrainImages{i});
+for i = 1:30
+    %select a random image.
+    r = randi([1,length(xTrainImages)]);
+    subplot(6,5,i);
+    imshow(xTrainImages{r});
 end
 
 %%
@@ -68,7 +72,7 @@ end
 % Set the size of the hidden layer for the autoencoder. For the autoencoder
 % that you are going to train, it is a good idea to make this smaller than
 % the input size.
-hiddenSize1 = 100;
+hiddenSize1 = 90;
 
 %%
 % The type of autoencoder that you will train is a sparse autoencoder. This
@@ -97,7 +101,7 @@ hiddenSize1 = 100;
 % that are described above.
 
 kana_autoenc1 = trainAutoencoder(xTrainImages,hiddenSize1, ...
-    'MaxEpochs',400, ...
+    'MaxEpochs',500, ...
     'L2WeightRegularization',0.004, ...
     'SparsityRegularization',4, ...
     'SparsityProportion',0.15, ...
@@ -214,7 +218,7 @@ imageHeight = 30;
 inputSize = imageWidth*imageHeight;
 
 % Load the test images
-[xTestImages, tTest] = kanaTrain_dataset({'kana_subsets/kana_pr6NM'}, 'jpg',9);
+[xTestImages, tTest] = kanaTrain_dataset({'kana_subsets/kana_pr6NM'}, 'jpg');
 
 % Turn the test images into vectors and put them in a matrix
 xTest = zeros(inputSize,numel(xTestImages));
@@ -252,6 +256,10 @@ kana_deepnet = train(kana_deepnet,xTrain,tTrain);
 
 y = kana_deepnet(xTest);
 plotconfusion(tTest,y);
+
+labels = ['?','?', '?', '?', '?', '?', '?', '?', '?', ' '];
+set(gca,'YTickLabel',labels');
+set(gca,'XTickLabel',labels');
 
 %% Summary
 % This example showed how to train a deep neural network to classify digits
